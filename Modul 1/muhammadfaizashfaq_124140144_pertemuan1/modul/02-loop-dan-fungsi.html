@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latihan 2 - Loop &amp; Fungsi</title>
+  <link rel="stylesheet" href="modul.css">
+  <style>
+    .pesan-error { color: #dc2626; font-weight: 600; font-size: 13px; }
+
+    /* kartu hasil BMI */
+    .bmi-kartu { border-radius: 10px; padding: 14px; margin-top: 10px; border: 1px solid #e2e8f0; }
+    .bmi-kartu bmi-nilai { font-size: 26px; font-weight: 800; }
+    .bmi-kategori { font-weight: 700; }
+    .bmi-kurus { background: #fef9c3; border-color: #fde68a; color: #854d0e; }
+    .bmi-normal { background: #ecfdf5; border-color: #a7f3d0; color: #047857; }
+    .bmi-lebih { background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
+    .bmi-obesitas { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+
+    /* grid FizzBuzz */
+    .fizzbuzz { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); gap: 5px; }
+    .fizzbuzz span { text-align: center; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 2px; font-size: 12.5px; font-weight: 600; }
+    .fizzbuzz .fb-fizzbuzz { background: #2563eb; color: #fff; border-color: #2563eb; }
+    .fizzbuzz .fb-fizz { background: #dbeafe; color: #1d4ed8; border-color: #bfdbfe; }
+    .fizzbuzz .fb-buzz { background: #fef3c7; color: #b45309; border-color: #fde68a; }
+    .fizzbuzz .fb-angka { color: #64748b; }
+  </style>
+</head>
+<body>
+  <h1>Latihan 2 &mdash; Loop &amp; Fungsi</h1>
+  <p class="subjudul">
+    Praktikum PAW &middot; Pertemuan 1 &middot; Muhammad Faiz Ashfaq (124140144) &middot; RA
+  </p>
+
+  <!-- ============ 2.1 TABEL PERKALIAN ============ -->
+  <fieldset>
+    <legend>2.1 Tabel Perkalian (1&ndash;10)</legend>
+    <label for="inputAngka">Angka pilihan Anda (1&ndash;20): </label>
+    <input type="number" id="inputAngka" value="7" min="1" max="20" step="1">
+    <button id="btnPerkalian" type="button">Cetak Tabel</button>
+  </fieldset>
+
+  <!-- ============ 2.4 KALKULATOR BMI ============ -->
+  <fieldset>
+    <legend>2.4 Kalkulator BMI (Body Mass Index)</legend>
+    <form id="formBmi">
+      <label for="inputBerat">Berat (kg): </label>
+      <input type="number" id="inputBerat" placeholder="Contoh: 70" min="1" max="300" step="0.1">
+      <label for="inputTinggi">Tinggi (cm): </label>
+      <input type="number" id="inputTinggi" placeholder="Contoh: 170" min="50" max="250" step="0.1">
+      <button type="submit">Hitung BMI</button>
+    </form>
+    <p class="pesan-error" id="pesanBmi" aria-live="polite"></p>
+    <p><em>Hasil perhitungan BMI ditampilkan pada bagian <strong>2.4</strong> di bawah.</em></p>
+  </fieldset>
+
+  <div id="result"></div>
+
+  <script src="02-loop-dan-fungsi.js"></script>
+</body>
+</html>

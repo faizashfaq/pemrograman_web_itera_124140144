@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latihan 3 - Array &amp; Objek</title>
+  <link rel="stylesheet" href="modul.css">
+  <style>
+    .pesan-sukses { color: #059669; font-weight: 600; font-size: 13px; }
+    .pesan-error { color: #dc2626; font-weight: 600; font-size: 13px; }
+    .pesan-info { color: #2563eb; font-weight: 600; font-size: 13px; }
+    .btn-mini { background: #2563eb; color: #fff; border: 1px solid #2563eb; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; margin-right: 4px; }
+    .btn-mini--hapus { background: #dc2626; border-color: #dc2626; }
+    .btn-mini--batal { background: #fff; color: #64748b; border-color: #cbd5e1; }
+    #crud-nilai { text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Latihan 3 &mdash; Array &amp; Objek</h1>
+  <p class="subjudul">
+    Praktikum PAW &middot; Pertemuan 1 &middot; Muhammad Faiz Ashfaq (124140144) &middot; RA
+  </p>
+
+  <!-- ============ 3.5 FORM CRUD (Create & Update) ============ -->
+  <fieldset>
+    <legend>3.5 CRUD Sederhana &mdash; Form Tambah / Ubah</legend>
+    <form id="formCrud">
+      <input type="text" id="crudNama" placeholder="Nama (min 3 karakter)">
+      <input type="text" id="crudNim" placeholder="NIM (9 digit)">
+      <input type="text" id="crudJurusan" placeholder="Jurusan">
+      <input type="number" id="crudNilai" placeholder="Nilai (0-100)" min="0" max="100" step="1">
+      <button type="submit" id="btnCrud">Tambah</button>
+      <button type="button" class="btn-mini btn-mini--batal" id="btnBatalCrud">Batal</button>
+    </form>
+    <p id="crudFeedback" aria-live="polite"></p>
+    <p><em>Tabel data mahasiswa (Read) beserta tombol Ubah / Hapus tampil pada bagian 3.5 di bawah.</em></p>
+  </fieldset>
+
+  <div id="result"></div>
+
+  <script src="03-array-dan-objek.js"></script>
+</body>
+</html>

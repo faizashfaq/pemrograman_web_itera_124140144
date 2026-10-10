@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latihan 4 - DOM &amp; API</title>
+  <link rel="stylesheet" href="modul.css">
+  <style>
+    .kartu { border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 18px; background: #fff; }
+    .kartu h2 { font-size: 16px; margin: 0 0 4px; }
+    .kartu p.keterangan { font-size: 13px; color: #64748b; margin: 0 0 12px; }
+
+    .pesan-error { color: #dc2626; font-weight: 600; font-size: 13px; min-height: 0; }
+    .pesan-sukses { color: #059669; font-weight: 600; font-size: 13px; }
+    .pesan-info { color: #2563eb; font-weight: 600; font-size: 13px; }
+    .pesan-kosong { color: #94a3b8; font-style: italic; font-size: 13px; }
+    .pesan-error:empty, .pesan-sukses:empty, .pesan-info:empty { display: none; }
+
+    .btn-mini { background: #2563eb; color: #fff; border: 1px solid #2563eb; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; margin-right: 4px; }
+    .btn-mini--hapus { background: #dc2626; border-color: #dc2626; }
+    .btn-mini--abu { background: #64748b; border-color: #64748b; }
+    .btn-mini:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    table.tabel { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    table.tabel th, table.tabel td { border: 1px solid #e2e8f0; padding: 6px 10px; font-size: 14px; }
+    table.tabel th { background: #f8fafc; font-size: 12px; text-transform: uppercase; color: #64748b; }
+    table.tabel td.kol-aksi { text-align: center; white-space: nowrap; }
+
+    .post-kartu { background: #f1f5f9; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+    .post-kartu h4 { margin: 0 0 4px; font-size: 14px; }
+    .post-kartu p { margin: 0; font-size: 13px; color: #475569; }
+
+    ul.daftar-judul { margin: 8px 0; padding-left: 20px; font-size: 13.5px; }
+    ul.daftar-judul li { margin: 3px 0; }
+
+    /* --- Todo List --- */
+    #todo-list { list-style: none; padding: 0; margin: 12px 0 0; }
+    #todo-list li { display: flex; justify-content: space-between; align-items: center; gap: 12px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; margin-bottom: 6px; }
+    #todo-list li.selesai .teks { text-decoration: line-through; color: #94a3b8; }
+    #todo-list .teks { font-size: 14px; }
+
+    /* ===== DARK MODE (4.4) ===== */
+    body.gelap { background: #0f172a; color: #e2e8f0; }
+    body.gelap h1, body.gelap .kartu h2 { color: #e2e8f0; }
+    body.gelap .subjudul, body.gelap .kartu p.keterangan { color: #94a3b8; }
+    body.gelap .kartu { background: #1e293b; border-color: #334155; }
+    body.gelap input, body.gelap select { background: #0f172a; color: #e2e8f0; border-color: #475569; }
+    body.gelap table.tabel th { background: #334155; color: #cbd5e1; }
+    body.gelap table.tabel th, body.gelap table.tabel td { border-color: #334155; }
+    body.gelap .post-kartu { background: #0f172a; }
+    body.gelap .post-kartu p { color: #94a3b8; }
+    body.gelap .pesan-kosong { color: #64748b; }
+    body.gelap #todo-list li { border-color: #334155; background: #0f172a; }
+    body.gelap #todo-list li.selesai .teks { color: #64748b; }
+    body.gelap #storage-status { background: #0f172a; border-color: #334155; color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <h1>Latihan 4 &mdash; DOM &amp; API</h1>
+  <p class="subjudul">
+    Praktikum PAW &middot; Pertemuan 1 &middot; Muhammad Faiz Ashfaq (124140144) &middot; RA
+  </p>
+
+  <!-- ============ 4.4 DARK MODE TOGGLE (manipulasi class CSS) ============ -->
+  <div class="kartu">
+    <h2>4.4 Dark Mode Toggle</h2>
+    <p class="keterangan">
+      Tombol di bawah memanipulasi class CSS pada elemen <code>&lt;body&gt;</code>
+      (menambah / menghapus class <code>gelap</code>).
+    </p>
+    <button id="btn-dark-mode" class="btn-mini" type="button">Aktifkan Mode Gelap</button>
+    <p id="status-tema" class="pesan-info"></p>
+  </div>
+
+  <!-- ============ 4.1 FORM INPUT MAHASISWA + VALIDASI ============ -->
+  <div class="kartu">
+    <h2>4.1 Form Input Data Mahasiswa Baru</h2>
+    <p class="keterangan">Data yang valid langsung masuk ke daftar pada tabel di bawah.</p>
+    <form id="form-mahasiswa">
+      <p>
+        <input type="text" id="mhs-nama" placeholder="Nama lengkap (min 3 karakter)">
+        <input type="text" id="mhs-nim" placeholder="NIM (9 digit angka)">
+      </p>
+      <p>
+        <select id="mhs-jurusan">
+          <option value="">-- Pilih Jurusan --</option>
+          <option value="Teknik Informatika">Teknik Informatika</option>
+          <option value="Teknik Komputer">Teknik Komputer</option>
+          <option value="Sistem Informasi">Sistem Informasi</option>
+          <option value="Manajemen">Manajemen</option>
+        </select>
+        <input type="number" id="mhs-nilai" placeholder="Nilai (0-100)" min="0" max="100" step="1">
+        <button type="submit">Tambah Mahasiswa</button>
+      </p>
+    </form>
+    <p id="feedback-mahasiswa" class="pesan-error" aria-live="polite"></p>
+    <div id="daftar-mahasiswa"></div>
+  </div>
+
+  <!-- ============ 4.2 LOCALSTORAGE PERSISTEN ============ -->
+  <div class="kartu">
+    <h2>4.2 Penyimpanan Persisten dengan localStorage</h2>
+    <p class="keterangan">
+      Daftar mahasiswa di atas disimpan ke <code>localStorage</code> memakai
+      <code>JSON.stringify()</code> dan dimuat kembali dengan <code>JSON.parse()</code>,
+      sehingga isinya tetap ada setelah halaman di-refresh.
+    </p>
+    <p id="storage-status" aria-live="polite"></p>
+    <button id="btn-hapus-storage" class="btn-mini btn-mini--hapus" type="button">Hapus Semua Data</button>
+  </div>
+
+  <!-- ============ 4.3 SEARCH / FILTER POST DARI API ============ -->
+  <div class="kartu">
+    <h2>4.3 Search / Filter Post dari API</h2>
+    <p class="keterangan">Data diambil dari jsonplaceholder.typicode.com/posts lalu disaring berdasarkan judul.</p>
+    <p>
+      <input type="text" id="cari-post" placeholder="Kata kunci judul post..." style="min-width:240px">
+      <button id="btn-cari-post" type="button">Cari</button>
+    </p>
+    <div id="cari-output"></div>
+  </div>
+
+  <!-- ============ 4.5 PAGINATION DARI API ============ -->
+  <div class="kartu">
+    <h2>4.5 Pagination Data dari API</h2>
+    <p class="keterangan">Menampilkan data API 5 item per halaman dengan tombol Previous dan Next.</p>
+    <button id="btn-load-pagination" type="button">Muat 100 Post</button>
+    <div id="pagination-output"></div>
+  </div>
+
+  <!-- ============ 4.6 TODO LIST + DOM + LOCALSTORAGE ============ -->
+  <div class="kartu">
+    <h2>4.6 Todo List (DOM Manipulation + localStorage)</h2>
+    <p class="keterangan">Fitur tambah, tandai selesai, dan hapus. Data disimpan di localStorage.</p>
+    <form id="todo-form">
+      <p>
+        <input type="text" id="todo-input" placeholder="Tulis tugas baru..." style="min-width:240px">
+        <button type="submit">Tambah</button>
+        <button type="button" id="btn-reset-todo" class="btn-mini btn-mini--abu">Kosongkan</button>
+      </p>
+    </form>
+    <p id="todo-info" class="pesan-info"></p>
+    <ul id="todo-list"></ul>
+  </div>
+
+  <script src="04-dom-dan-api.js"></script>
+</body>
+</html>

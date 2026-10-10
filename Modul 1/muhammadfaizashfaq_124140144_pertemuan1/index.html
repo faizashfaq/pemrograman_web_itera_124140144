@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini POS &mdash; Kasir &amp; Keranjang Belanja</title>
+  <meta
+    name="description"
+    content="Aplikasi kasir dan keranjang belanja sederhana untuk kantin/toko kampus. Praktikum Pengembangan Aplikasi Web - Pertemuan 1."
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+
+    <!-- ===================== HEADER ===================== -->
+    <header class="app-header">
+      <div class="app-header__brand">
+        <span class="app-header__logo" aria-hidden="true">&#128722;</span>
+        <div>
+          <h1>Mini POS</h1>
+          <p>Aplikasi Kasir &amp; Keranjang Belanja Sederhana</p>
+        </div>
+      </div>
+      <div class="app-header__meta">
+        <span class="badge">Praktikum PAW Pertemuan 1</span>
+        <span class="badge badge--muted">Muhammad Faiz Ashfaq (124140144)</span>
+      </div>
+    </header>
+
+    <main class="layout">
+
+      <!-- ===================== KOLOM KIRI: FORM + KALKULATOR ===================== -->
+      <section class="column column--side">
+
+        <!-- ---------- Form Input Barang ---------- -->
+        <div class="card">
+          <div class="card__head">
+            <h2 class="card__title">Input Barang</h2>
+            <p class="card__subtitle">Tambahkan barang ke keranjang belanja</p>
+          </div>
+
+          <form id="formBarang" novalidate>
+            <div class="field">
+              <label for="namaBarang">Nama Barang</label>
+              <input
+                type="text"
+                id="namaBarang"
+                name="namaBarang"
+                placeholder="Contoh: Buku Tulis"
+                autocomplete="off"
+              />
+              <p class="error-message" id="error-namaBarang" aria-live="polite"></p>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="hargaSatuan">Harga Satuan (Rp)</label>
+                <input
+                  type="number"
+                  id="hargaSatuan"
+                  name="hargaSatuan"
+                  placeholder="Min. 500"
+                  min="0"
+                  step="1"
+                />
+                <p class="error-message" id="error-hargaSatuan" aria-live="polite"></p>
+              </div>
+
+              <div class="field field--qty">
+                <label for="jumlah">Jumlah / Qty</label>
+                <input
+                  type="number"
+                  id="jumlah"
+                  name="jumlah"
+                  placeholder="Min. 1"
+                  min="1"
+                  step="1"
+                />
+                <p class="error-message" id="error-jumlah" aria-live="polite"></p>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn--primary btn--block" id="btnTambah">
+              + Tambah ke Keranjang
+            </button>
+          </form>
+
+          <div class="form-feedback" id="formFeedback" aria-live="polite"></div>
+        </div>
+
+        <!-- ---------- Ringkasan & Kembalian ---------- -->
+        <div class="card">
+          <div class="card__head">
+            <h2 class="card__title">Kalkulator &amp; Pembayaran</h2>
+            <p class="card__subtitle">Diskon otomatis &amp; kalkulator kembalian</p>
+          </div>
+
+          <!-- Promo -->
+          <div class="promo">
+            <div class="field field--inline">
+              <label for="kodePromo">Kode Promo</label>
+              <div class="promo__controls">
+                <input
+                  type="text"
+                  id="kodePromo"
+                  placeholder="Contoh: HEMAT10"
+                  autocomplete="off"
+                />
+                <button type="button" class="btn btn--ghost" id="btnPromo">Terapkan</button>
+                <button type="button" class="btn btn--ghost btn--muted" id="btnPromoReset">
+                  Batal
+                </button>
+              </div>
+              <p class="error-message" id="error-kodePromo" aria-live="polite"></p>
+              <p class="hint">
+                Kode <strong>HEMAT10</strong> memberi potongan 10%. Diskon otomatis
+                juga berlaku bila total &ge; Rp50.000.
+              </p>
+            </div>
+          </div>
+
+          <!-- Ringkasan tagihan -->
+          <dl class="rangkuman">
+            <div class="rangkuman__baris">
+              <dt>Total Belanja</dt>
+              <dd id="totalBelanja">Rp0</dd>
+            </div>
+            <div class="rangkuman__baris rangkuman__baris--diskon">
+              <dt>Diskon</dt>
+              <dd id="totalDiskon">&minus;Rp0</dd>
+            </div>
+            <p class="rangkuman__catatan" id="labelDiskon"></p>
+            <div class="rangkuman__baris rangkuman__baris--total">
+              <dt>Total Akhir</dt>
+              <dd id="totalAkhir">Rp0</dd>
+            </div>
+          </dl>
+
+          <hr class="separator" />
+
+          <!-- Pembayaran -->
+          <form id="formBayar" novalidate>
+            <div class="field">
+              <label for="uangBayar">Uang Bayar (Rp)</label>
+              <input
+                type="number"
+                id="uangBayar"
+                name="uangBayar"
+                placeholder="0"
+                min="0"
+                step="1"
+              />
+              <p class="error-message" id="error-uangBayar" aria-live="polite"></p>
+            </div>
+
+            <div class="kembalian" id="kembalianBox">
+              <span>Kembalian</span>
+              <strong id="kembalian">Rp0</strong>
+            </div>
+            <p class="kembalian-note" id="kembalianNote" aria-live="polite"></p>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn--dark" id="btnProsesBayar">
+                Proses Pembayaran
+              </button>
+              <button type="button" class="btn btn--outline" id="btnTransaksiBaru">
+                Transaksi Baru
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ===================== KOLOM KANAN: KERANJANG ===================== -->
+      <section class="column column--main">
+        <div class="card card--cart">
+          <div class="card__head card__head--row">
+            <div>
+              <h2 class="card__title">Keranjang Belanja</h2>
+              <p class="card__subtitle" id="ringkasanKeranjang">
+                Belum ada barang di keranjang
+              </p>
+            </div>
+            <span class="counter" id="counterBarang">0 item</span>
+          </div>
+
+          <div class="table-wrapper" id="tableWrapper">
+            <table class="table-keranjang" id="tabelKeranjang">
+              <thead>
+                <tr>
+                  <th class="col-no">No</th>
+                  <th>Nama Barang</th>
+                  <th class="col-harga">Harga Satuan</th>
+                  <th class="col-qty">Qty</th>
+                  <th class="col-subtotal">Subtotal</th>
+                  <th class="col-aksi">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="isiKeranjang"></tbody>
+            </table>
+          </div>
+
+          <div class="empty-state" id="emptyState">
+            <span class="empty-state__icon" aria-hidden="true">&#128717;</span>
+            <p><strong>Keranjang masih kosong</strong></p>
+            <p>Isi form Input Barang di samping untuk menambahkan barang pertama.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
