@@ -145,7 +145,7 @@ Console** (`F12`).
 ### 3. Manajemen List & LocalStorage — *[30%]*
 
 - [x] Tabel keranjang interaktif dengan kolom **No, Nama Barang, Harga Satuan, Qty, Subtotal, Aksi**
-- [x] Tombol **Hapus** di setiap baris barang
+- [x] Tombol **Hapus** di setiap baris barang.
 - [x] Setelah dihapus, **total belanja, diskon, dan total akhir langsung dihitung ulang**
 - [x] Animasi transisi saat baris dihapus / barang ditambahkan
 - [x] **Penyimpanan persisten**: `localStorage.setItem()` dengan `JSON.stringify()`
