@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HayuMencatat</title>
+  <meta
+    name="description"
+    content="CatatanKu - dashboard catatan pribadi dengan fitur CRUD, localStorage, dan widget cuaca real-time ITERA. Praktikum Pengembangan Aplikasi Web - Pertemuan 2 (ES6+)."
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+
+    <!-- ===================== HEADER ===================== -->
+    <header class="app-header">
+      <div class="app-header__brand">
+        <span class="app-header__logo" aria-hidden="true">&#128221;</span>
+        <div>
+          <h1>HayuMencatat</h1>
+          <p>Catatan Pribadi & Widget Cuaca ITERA</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+
+      <!-- ===================== BARIS ATAS: CUACA + STATISTIK ===================== -->
+      <section class="dashboard">
+
+        <!-- ---------- Widget Cuaca ITERA (async/await) ---------- -->
+        <div class="card card--cuaca">
+          <div class="card__head card__head--row">
+            <div>
+              <h2 class="card__title">Cuaca ITERA</h2>
+              <p class="card__subtitle">Institut Teknologi Sumatera &middot; Lampung Selatan</p>
+            </div>
+            <button type="button" class="btn btn--ghost btn--sm" id="btnMuatCuaca">
+              <span aria-hidden="true">&#128260;</span> Refresh
+            </button>
+          </div>
+
+          <div class="cuaca" id="widgetCuaca" aria-live="polite" aria-busy="true">
+            <!-- Status: memuat / error -->
+            <p class="cuaca__status" id="cuacaStatus">
+              <span class="spinner" aria-hidden="true"></span> Mengambil data cuaca&hellip;
+            </p>
+
+            <div class="cuaca__utama" id="cuacaUtama" hidden>
+              <span class="cuaca__ikon" id="cuacaIkon" aria-hidden="true">&#9729;</span>
+              <div class="cuaca__ringkas">
+                <strong class="cuaca__suhu" id="cuacaSuhu">&mdash;</strong>
+                <span class="cuaca__deskripsi" id="cuacaDeskripsi">Memuat&hellip;</span>
+              </div>
+            </div>
+
+            <dl class="cuaca__detail" id="cuacaDetail" hidden>
+              <div class="cuaca__detail-item">
+                <dt>Lembap</dt>
+                <dd id="cuacaLembap">&mdash;</dd>
+              </div>
+              <div class="cuaca__detail-item">
+                <dt>Angin</dt>
+                <dd id="cuacaAngin">&mdash;</dd>
+              </div>
+              <div class="cuaca__detail-item">
+                <dt>Diperbarui</dt>
+                <dd id="cuacaDiperbarui">&mdash;</dd>
+              </div>
+            </dl>
+
+            <div class="prakiraan" id="prakiraan" hidden>
+              <p class="prakiraan__judul">Prakiraan 3 hari ke depan</p>
+              <ul class="prakiraan__list" id="prakiraanList"></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---------- Statistik Catatan ---------- -->
+        <div class="card card--statistik">
+          <div class="card__head">
+            <h2 class="card__title">Statistik Catatan</h2>
+            <p class="card__subtitle">Diperbarui otomatis setiap perubahan</p>
+          </div>
+
+          <div class="statistik">
+            <div class="statistik__kotak statistik__kotak--biru">
+              <span class="statistik__angka" id="statTotal">0</span>
+              <span class="statistik__label">Total Catatan</span>
+            </div>
+            <div class="statistik__kotak statistik__kotak--kuning">
+              <span class="statistik__angka" id="statDisematkan">0</span>
+              <span class="statistik__label">Disematkan</span>
+            </div>
+            <div class="statistik__kotak statistik__kotak--hijau">
+              <span class="statistik__angka" id="statKategori">0</span>
+              <span class="statistik__label">Kategori Terpakai</span>
+            </div>
+            <div class="statistik__kotak statistik__kotak--ungu">
+              <span class="statistik__angka" id="statKarakter">0</span>
+              <span class="statistik__label">Total Karakter</span>
+            </div>
+          </div>
+
+          <div class="statistik__distribusi" id="distribusiKategori"></div>
+        </div>
+      </section>
+
+      <!-- ---------- Kutipan Hari Ini (API kedua, paralel via Promise.all) ---------- -->
+      <section class="card card--kutipan">
+        <div class="card__head card__head--row">
+          <div>
+            <h2 class="card__title">Kutipan Hari Ini</h2>
+            <p class="card__subtitle">Diambil bersamaan dengan data cuaca memakai Promise.all</p>
+          </div>
+          <button type="button" class="btn btn--ghost btn--sm" id="btnMuatKutipan">
+            <span aria-hidden="true">&#8635;</span> Kutipan lain
+          </button>
+        </div>
+        <blockquote class="kutipan" id="kutipan" aria-live="polite">
+          <p class="kutipan__teks" id="kutipanTeks">Memuat kutipan&hellip;</p>
+          <footer class="kutipan__penulis" id="kutipanPenulis">&mdash;</footer>
+        </blockquote>
+      </section>
+
+      <!-- ===================== BARIS BAWAH: FORM + DAFTAR ===================== -->
+      <section class="layout__bawah">
+
+        <!-- ---------- Kolom kiri: Form & Filter ---------- -->
+        <section class="column column--side">
+
+          <!-- Form Tambah / Edit Catatan -->
+          <div class="card">
+            <div class="card__head">
+              <h2 class="card__title" id="judulForm">Catatan Baru</h2>
+              <p class="card__subtitle" id="subjudulForm">Isi catatan lalu tekan Simpan</p>
+            </div>
+
+            <form id="formCatatan" novalidate>
+              <div class="field">
+                <label for="inputJudul">Judul Catatan</label>
+                <input
+                  type="text"
+                  id="inputJudul"
+                  name="judul"
+                  placeholder="Contoh: Rangkuman UTS Pemrograman Web"
+                  maxlength="70"
+                  autocomplete="off"
+                />
+                <p class="error-message" id="error-judul" aria-live="polite"></p>
+              </div>
+
+              <div class="field">
+                <div class="field__label-row">
+                  <label for="inputIsi">Isi Catatan</label>
+                  <span class="counter-kecil" id="counterIsi">0 / 600</span>
+                </div>
+                <textarea
+                  id="inputIsi"
+                  name="isi"
+                  rows="6"
+                  maxlength="600"
+                  placeholder="Tulis isi catatan di sini&hellip;"
+                ></textarea>
+                <p class="error-message" id="error-isi" aria-live="polite"></p>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label for="inputKategori">Kategori</label>
+                  <select id="inputKategori" name="kategori">
+                    <option value="kuliah">&#127891; Kuliah</option>
+                    <option value="tugas">&#128203; Tugas</option>
+                    <option value="ide">&#128161; Ide</option>
+                    <option value="pribadi">&#128172; Pribadi</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="inputPrioritas">Prioritas</label>
+                  <select id="inputPrioritas" name="prioritas">
+                    <option value="rendah">Rendah</option>
+                    <option value="sedang" selected>Sedang</option>
+                    <option value="tinggi">Tinggi</option>
+                  </select>
+                </div>
+              </div>
+
+              <label class="checkbox">
+                <input type="checkbox" id="inputPin" name="pin" />
+                <span>Sematkan catatan ini di bagian atas</span>
+              </label>
+
+              <div class="btn-group">
+                <button type="submit" class="btn btn--primary" id="btnSimpan">
+                  + Simpan Catatan
+                </button>
+                <button type="button" class="btn btn--outline" id="btnBatal" hidden>
+                  Batal Edit
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Filter, Pencarian & Pengelolaan Data -->
+          <div class="card">
+            <div class="card__head">
+              <h2 class="card__title">Cari &amp; Filter</h2>
+              <p class="card__subtitle">Saring catatan yang tampil di layar</p>
+            </div>
+
+            <div class="field">
+              <label for="inputCari">Kata Kunci</label>
+              <input
+                type="search"
+                id="inputCari"
+                placeholder="Cari judul atau isi catatan&hellip;"
+                autocomplete="off"
+              />
+            </div>
+
+            <div class="field">
+              <label>Kategori</label>
+              <div class="chip-grup" id="chipKategori" role="group" aria-label="Filter kategori"></div>
+            </div>
+
+            <div class="field">
+              <label for="inputUrutkan">Urutkan</label>
+              <select id="inputUrutkan">
+                <option value="terbaru">Terlama disematkan, lalu terbaru</option>
+                <option value="terlama">Terlama &rarr; terbaru</option>
+                <option value="abjad">Judul A &rarr; Z</option>
+                <option value="prioritas">Prioritas tertinggi</option>
+              </select>
+            </div>
+
+            <hr class="separator" />
+
+            <p class="hint">Cadangkan catatan ke berkas JSON, atau pulihkan dari cadangan.</p>
+            <div class="btn-group btn-group--wrap">
+              <button type="button" class="btn btn--dark btn--sm" id="btnEkspor">
+                &#8681; Ekspor
+              </button>
+              <button type="button" class="btn btn--outline btn--sm" id="btnImpor">
+                &#8682; Impor
+              </button>
+              <button type="button" class="btn btn--danger btn--sm" id="btnResetSemua">
+                Hapus Semua
+              </button>
+              <input type="file" id="inputImpor" accept="application/json" hidden />
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------- Kolom kanan: Daftar Catatan ---------- -->
+        <section class="column column--main">
+          <div class="card">
+            <div class="card__head card__head--row">
+              <div>
+                <h2 class="card__title">Catatan Saya</h2>
+                <p class="card__subtitle" id="ringkasanCatatan">Belum ada catatan</p>
+              </div>
+              <span class="counter" id="counterCatatan">0 catatan</span>
+            </div>
+
+            <div class="catatan-grid" id="daftarCatatan"></div>
+
+            <div class="empty-state" id="emptyState">
+              <span class="empty-state__icon" aria-hidden="true">&#128221;</span>
+              <p><strong id="emptyStateJudul">Belum ada catatan</strong></p>
+              <p id="emptyStatePesan">Isi form di samping untuk membuat catatan pertama.</p>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p class="app-footer__catatan">
+        Data cuaca dari <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>,
+        kutipan dari <a href="https://dummyjson.com/" target="_blank" rel="noopener">DummyJSON</a>.
+        Catatan disimpan di localStorage browser Anda.
+      </p>
+    </footer>
+  </div>
+
+  <!-- ===================== KOMPONEN BAWAH ===================== -->
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="modal-overlay" id="modalHapus" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalHapusJudul">
+      <h3 class="modal__judul" id="modalHapusJudul">Hapus Catatan</h3>
+      <p class="modal__pesan">
+        Catatan <strong id="modalHapusNama">&mdash;</strong> akan dihapus permanen.
+        Tindakan ini tidak dapat dibatalkan.
+      </p>
+      <div class="btn-group">
+        <button type="button" class="btn btn--danger" id="btnKonfirmasiHapus">
+          Ya, Hapus
+        </button>
+        <button type="button" class="btn btn--outline" id="btnBatalHapus">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

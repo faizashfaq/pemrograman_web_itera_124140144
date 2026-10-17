@@ -1,0 +1,193 @@
+/* =====================================================================
+   Style bersama untuk seluruh file latihan di folder modul/
+   Praktikum PAW - Pertemuan 2 - Muhammad Faiz Ashfaq (124140144)
+   ===================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 28px 20px 60px;
+  background: #f1f5f9;
+  color: #0f172a;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.subjudul {
+  color: #64748b;
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+
+.kembali {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 5px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #4f46e5;
+  background: #eef2ff;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.kembali:hover {
+  background: #e0e7ff;
+}
+
+#result {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+#result h3 {
+  font-size: 15px;
+  margin: 18px 0 8px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+}
+
+#result h3:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+#result p {
+  margin: 6px 0;
+}
+
+#result ul,
+#result ol {
+  margin: 6px 0;
+  padding-left: 22px;
+}
+
+#result li {
+  margin: 2px 0;
+}
+
+#result code {
+  padding: 1px 5px;
+  font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+  font-size: 13px;
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+#result table {
+  border-collapse: collapse;
+  margin: 8px 0;
+  font-size: 14px;
+  width: 100%;
+}
+
+#result th,
+#result td {
+  border: 1px solid #e2e8f0;
+  padding: 6px 12px;
+  text-align: left;
+}
+
+#result th {
+  background: #f8fafc;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #64748b;
+}
+
+pre {
+  margin: 8px 0;
+  padding: 12px 14px;
+  overflow-x: auto;
+  font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #d1fae5;
+  background: #0f172a;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.catatan {
+  margin: 10px 0;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #475569;
+  background: #f8fafc;
+  border-left: 4px solid #4f46e5;
+  border-radius: 0 8px 8px 0;
+}
+
+.catatan--sukses {
+  color: #065f46;
+  background: #ecfdf5;
+  border-left-color: #059669;
+}
+
+.catatan--galat {
+  color: #991b1b;
+  background: #fef2f2;
+  border-left-color: #dc2626;
+}
+
+.angka {
+  font-variant-numeric: tabular-nums;
+}
+
+input,
+button {
+  font: inherit;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+button {
+  background: #4f46e5;
+  color: #fff;
+  border-color: #4f46e5;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #4338ca;
+}
+
+button.secondary {
+  background: #fff;
+  color: #475569;
+  border-color: #cbd5e1;
+}
+
+button.secondary:hover {
+  background: #f1f5f9;
+}
+
+fieldset {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  margin: 14px 0;
+  padding: 12px 16px;
+}
+
+legend {
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+  padding: 0 6px;
+}
