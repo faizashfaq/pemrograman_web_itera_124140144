@@ -46,18 +46,27 @@ untuk belanja di atas Rp50.000 dan kode promo `HEMAT10`.
 ### Alur Penggunaan
 
 ```
-Input Barang ──▶ Validasi ──▶ Tambah ke Array Keranjang ──▶ Render Tabel
-                    │                    │                        │
-              (gagal: pesan           │                   Hitung Subtotal
-               merah, barang          │                   Hitung Total Belanja
-               TIDAK masuk)            ▼                   Hitung Diskon 10%
-                                    Simpan ke               Hitung Total Akhir
-                                   localStorage                  │
-                                                               ▼
-              Hapus Item ──▶ Hitung Ulang ◀─── Kembalian ◀─── Input Uang Bayar
-                    │
-                    ▼
-          Transaksi Baru / Reset (kosongkan keranjang + localStorage)
+Buka aplikasi di browser
+  ↓
+Input Barang
+  ↓
+Validasi Input
+  ├─ Gagal    → tampilkan pesan merah, barang TIDAK masuk
+  └─ Berhasil → lanjut ke langkah berikutnya
+  ↓
+Tambah ke Array Keranjang
+  ↓
+Render Tabel
+  ↓
+Hitung Subtotal → Total Belanja → Diskon 10% → Total Akhir
+  ↓
+Simpan ke localStorage
+  ↓
+Input Uang Bayar → Hitung Kembalian → Perbarui Tampilan
+  ↓
+Hapus Item → Hitung Ulang tabel dan seluruh total
+  ↓
+Transaksi Baru / Reset (kosongkan keranjang dan localStorage)
 ```
 
 ---

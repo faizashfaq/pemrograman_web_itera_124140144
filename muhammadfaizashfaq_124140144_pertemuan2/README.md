@@ -47,24 +47,24 @@ keduanya API publik gratis tanpa API key.
 ### Alur Penggunaan
 
 ```
-Buka aplikasi
-     ↓
+Buka aplikasi di browser
+  ↓
 Cuaca ITERA & kutipan dimuat otomatis (async/await, paralel via Promise.allSettled)
-     ↓
-Catatan contoh dimuat dari localStorage  →  atau  isi form "Catatan Baru"
-     ↓
-┌─────────────────────────────────────────────────────────┐
-│  Tambah  → isi judul, isi, kategori, prioritas → Simpan   │
-│  Edit    → klik ikon pensil pada kartu → ubah → Simpan  │
-│  Hapus   → ikon tong sampah → konfirmasi di modal         │
-│  Semat   → ikon pin → catatan naik ke posisi teratas      │
-│  Cari    → ketik di "Kata Kunci" (dengan debounce)        │
-│  Filter  → klik chip kategori atau pilih urutan            │
-└─────────────────────────────────────────────────────────┘
-     ↓
-Setiap perubahan langsung disimpan ke localStorage (JSON)
-     ↓
-Ekspor / Impor JSON sebagai cadangan
+  ↓
+Catatan contoh dimuat dari localStorage, atau isi form "Catatan Baru"
+  ↓
+┌────────────────────────────────────────────────────────┐
+│ Tambah  → isi judul, isi, kategori, prioritas → Simpan │
+│ Edit    → klik ikon pensil pada kartu → ubah → Simpan  │
+│ Hapus   → ikon tong sampah → konfirmasi di modal       │
+│ Semat   → ikon pin → catatan naik ke posisi teratas    │
+│ Cari    → ketik di "Kata Kunci" (dengan debounce)      │
+│ Filter  → klik chip kategori atau pilih urutan         │
+└────────────────────────────────────────────────────────┘
+  ↓
+Setiap perubahan langsung disimpan ke localStorage (format JSON)
+  ↓
+Ekspor atau Impor berkas JSON sebagai cadangan
 ```
 
 ---
