@@ -23,6 +23,7 @@ yang menjelaskan fitur, struktur kode, screenshot, dan ringkasan pengujiannya.
 |---|---|---|---|
 | **1** | JavaScript Dasar | **Mini POS** — simulasi kasir dan keranjang belanja sederhana | [README pertemuan 1](muhammadfaizashfaq_124140144_pertemuan1/README.md) |
 | **2** | JavaScript Next Gen (ES6+) | **HayuMencatat** — dashboard catatan pribadi dengan widget cuaca ITERA | [README pertemuan 2](muhammadfaizashfaq_124140144_pertemuan2/README.md) |
+| **3** | React Basics | **KutuBUKU** — aplikasi manajemen buku pribadi berbasis React | [README pertemuan 3](muhammadfaizashfaq_124140144_pertemuan3/README.md) |
 
 ### Pertemuan 1 — Mini POS
 
@@ -47,6 +48,25 @@ literals, modern array methods, serta `async`/`await` dengan `Promise.allSettled
 Folder `modul/` di dalam pertemuan 2 berisi **jawaban latihan resmi** untuk
 tiap bagian materi, bukan materi tutorial. Buka halaman latihannya langsung di
 browser tanpa perlu instalasi apa pun.
+
+### Pertemuan 3 — KutuBUKU
+
+Aplikasi manajemen buku pribadi untuk mencatat buku yang dimiliki, sedang dibaca,
+atau ingin dibeli. Mendukung tambah, edit, hapus, filter status, pencarian
+berdasarkan judul atau nama penulis, halaman statistik, serta penyimpanan
+permanen di `localStorage`.
+
+Dibangun dengan **React 19 + Vite**: functional components, Hooks, Context API,
+React Router, dua custom hook, PropTypes pada seluruh komponen, dan 8 unit test
+dengan Vitest + React Testing Library.
+
+Project React-nya berada di folder `tugas-manajemen-buku/`. Jawaban latihan
+mandiri tiap submodul disimpan di folder `modul/` (satu folder per latihan) dan
+bisa dibuka langsung di browser tanpa instalasi.
+
+**Materi yang dipraktikkan:** component-based architecture, JSX, props,
+`useState`, `useEffect`, controlled component, conditional rendering, list dan
+key, React Router, Context API, custom hooks, serta pengujian komponen.
 
 ---
 
@@ -91,6 +111,24 @@ Lalu buka di browser:
 | 1 — Mini POS | `http://localhost:8000/muhammadfaizashfaq_124140144_pertemuan1/` |
 | 2 — HayuMencatat | `http://localhost:8000/muhammadfaizashfaq_124140144_pertemuan2/` |
 
+### Cara 3 — React (Pertemuan 3)
+
+Pertemuan 3 adalah project React dengan dependensi, jadi dijalankan melalui npm,
+bukan Live Server:
+
+```bash
+cd muhammadfaizashfaq_124140144_pertemuan3/tugas-manajemen-buku
+npm install
+npm run dev
+```
+
+Buka `http://localhost:5173`. Perintah `npm test` menjalankan unit test, sedangkan
+`npm run build` membuat bundle produksi.
+
+Jawaban latihan mandiri ada di `muhammadfaizashfaq_124140144_pertemuan3/modul/`.
+Tiap folder latihan berisi satu `index.html` yang bisa dibuka langsung di browser
+(memerlukan koneksi internet untuk memuat React dari CDN).
+
 ### Membuka halaman latihan (`modul/`)
 
 Halaman latihan di folder `modul/` berjalan tanpa server dan tanpa internet.
@@ -124,13 +162,18 @@ yaitu aplikasi tugas dan jawaban latihan.
 |---|---|
 | **HTML5** | Struktur semantik dan atribut aksesibilitas |
 | **CSS3** | Custom property, Grid, Flexbox, dan media query responsif |
-| **JavaScript** | Vanilla ES6+, tanpa framework |
+| **JavaScript** | Vanilla ES6+ pada pertemuan 1 dan 2 |
+| **React 19** | Library UI pada pertemuan 3 (components, hooks, Context API) |
+| **React Router** | Navigasi multi-halaman tanpa reload pada pertemuan 3 |
+| **Vite** | Build tool dan dev server untuk project React |
+| **Vitest + React Testing Library** | Pengujian komponen React |
 | **localStorage** | Penyimpanan data di sisi klien |
 | **Blob & FileReader** | Ekspor dan impor data JSON |
 | **Open-Meteo** | Data cuaca real-time (gratis, tanpa API key) |
 | **DummyJSON** | Kutipan harian (gratis, tanpa API key) |
 
-Tidak ada dependensi. Repository ini bisa di-*clone* dan langsung dijalankan.
+Pertemuan 1 dan 2 tidak memiliki dependensi dan bisa langsung dijalankan. Pertemuan 3
+memerlukan `npm install` sebelum `npm run dev`.
 
 ---
 
