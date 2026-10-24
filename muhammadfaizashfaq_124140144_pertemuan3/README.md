@@ -101,6 +101,7 @@ Setiap perubahan langsung disimpan ke localStorage (key "books_data")
 Jawaban latihan mandiri dari setiap submodul disimpan terpisah di folder `modul/`.
 Tiap folder berisi satu `index.html` mandiri yang memuat React 18 dan Babel
 Standalone dari CDN, sehingga bisa dibuka langsung di browser tanpa `npm install`.
+Halaman latihan memerlukan koneksi internet karena library diambil dari CDN.
 
 | Folder | Latihan | Ringkasan |
 |---|---|---|
@@ -110,8 +111,6 @@ Standalone dari CDN, sehingga bisa dibuka langsung di browser tanpa `npm install
 | `modul/04-halaman-404/` | Submodul 4 | Rute penangkap `path="*"` yang menampilkan halaman 404 |
 | `modul/05-usewindowsize/` | Submodul 5 | Badge "Mode Layar Mobile" / "Mode Layar Desktop" dari `useWindowSize` |
 | `modul/06-statistik-about/` | Submodul 6 | Halaman About membaca `stats.total` dari Context API |
-
-Petunjuk lengkap tiap latihan ada di [`modul/README.md`](modul/README.md).
 
 ---
 
@@ -207,8 +206,7 @@ muhammadfaizashfaq_124140144_pertemuan3/
 │   ├── 03-hapus-semua-tugas/
 │   ├── 04-halaman-404/
 │   ├── 05-usewindowsize/
-│   ├── 06-statistik-about/
-│   └── README.md                  # Daftar dan cara membuka latihan
+│   └── 06-statistik-about/
 └── README.md
 ```
 
