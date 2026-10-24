@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan 1 - Eksplorasi HMR</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.65;
+        color: #333;
+        background-color: #f4f7f9;
+      }
+
+      .app-header {
+        padding: 2.25rem 1rem;
+        color: #fff;
+        text-align: center;
+        transition: background-color 0.25s ease;
+      }
+
+      .app-header h1 {
+        font-size: 1.7rem;
+      }
+
+      .app-header p {
+        margin-top: 0.25rem;
+        font-size: 0.95rem;
+        opacity: 0.9;
+      }
+
+      .container {
+        max-width: 720px;
+        margin: 2rem auto;
+        padding: 0 1rem 3rem;
+      }
+
+      .card {
+        padding: 1.35rem;
+        margin-bottom: 1rem;
+        background-color: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+      }
+
+      .card-title {
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+      }
+
+      .card p,
+      .card li {
+        font-size: 0.93rem;
+        color: #475569;
+      }
+
+      .card ol {
+        padding-left: 1.2rem;
+      }
+
+      .card li + li {
+        margin-top: 0.35rem;
+      }
+
+      code {
+        padding: 0.1rem 0.35rem;
+        font-size: 0.85em;
+        color: #0f172a;
+        background-color: #f1f5f9;
+        border-radius: 4px;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin-top: 1rem;
+      }
+
+      .btn {
+        padding: 0.55rem 1rem;
+        font: inherit;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-radius: 6px;
+      }
+
+      .btn-primary {
+        color: #fff;
+        background-color: #0d9488;
+      }
+
+      .btn-primary:hover {
+        background-color: #0f766e;
+      }
+
+      .btn-secondary {
+        color: #475569;
+        background-color: transparent;
+        border-color: #cbd5e1;
+      }
+
+      .btn-secondary:hover {
+        border-color: #94a3b8;
+      }
+
+      .note {
+        padding: 0.85rem 1rem;
+        margin-top: 1rem;
+        font-size: 0.88rem;
+        color: #0f766e;
+        background-color: #f0fdfa;
+        border-left: 3px solid #0d9488;
+        border-radius: 0 6px 6px 0;
+      }
+    </style>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState } = React;
+
+      // Nilai warna pada latihan submodul 1
+      const WARNA = {
+        awal: '#3498db',
+        hasilLatihan: '#0d9488',
+      };
+
+      function Header({ color }) {
+        return (
+          <header className="app-header" style={{ backgroundColor: color }}>
+            <h1>My React Task Manager</h1>
+            <p>Latihan Mandiri - Eksplorasi HMR</p>
+          </header>
+        );
+      }
+
+      function App() {
+        // Warna awal memakai nilai hasil latihan
+        const [color, setColor] = useState(WARNA.hasilLatihan);
+
+        return (
+          <div>
+            <Header color={color} />
+
+            <main className="container">
+              <section className="card">
+                <h2 className="card-title">
+                  Warna header saat ini: <code>{color}</code>
+                </h2>
+                <p>
+                  Klik tombol di bawah untuk melihat React memperbarui tampilan
+                  secara langsung. Tidak ada halaman yang dimuat ulang.
+                </p>
+                <div className="actions">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => setColor(WARNA.hasilLatihan)}
+                  >
+                    Teal #0d9488 (hasil latihan)
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setColor(WARNA.awal)}
+                  >
+                    Biru #3498db (nilai awal)
+                  </button>
+                </div>
+              </section>
+
+              <section className="card">
+                <h2 className="card-title">Langkah latihan pada project React</h2>
+                <ol>
+                  <li>
+                    Buka file <code>src/App.css</code> pada project React
+                    (Vite atau Create React App).
+                  </li>
+                  <li>
+                    Pada aturan <code>.App-header</code>, ubah{' '}
+                    <code>background-color: #3498db</code> menjadi{' '}
+                    <code>#0d9488</code>.
+                  </li>
+                  <li>
+                    Simpan file. Browser langsung menampilkan warna baru tanpa
+                    me-reload halaman.
+                  </li>
+                </ol>
+                <p className="note">
+                  HMR (Hot Module Replacement) hanya aktif saat development
+                  server berjalan (<code>npm run dev</code> atau{' '}
+                  <code>npm start</code>). Halaman ini menampilkan hasil akhir
+                  latihan sekaligus membuktikan React memperbarui DOM tanpa
+                  memuat ulang dokumen.
+                </p>
+              </section>
+            </main>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+  </body>
+</html>

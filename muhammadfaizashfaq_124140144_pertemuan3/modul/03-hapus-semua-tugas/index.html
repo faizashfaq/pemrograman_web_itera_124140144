@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan 3 - Hapus Semua Tugas</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.65;
+        color: #333;
+        background-color: #f4f7f9;
+      }
+
+      .app-header {
+        padding: 2rem 1rem;
+        color: #fff;
+        text-align: center;
+        background-color: #3498db;
+      }
+
+      .app-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .app-header p {
+        margin-top: 0.25rem;
+        font-size: 0.95rem;
+        opacity: 0.9;
+      }
+
+      .container {
+        max-width: 720px;
+        margin: 2rem auto;
+        padding: 0 1rem 3rem;
+      }
+
+      .card {
+        padding: 1.35rem;
+        margin-bottom: 1rem;
+        background-color: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+      }
+
+      .stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        background-color: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+      }
+
+      .stats-values {
+        display: flex;
+        gap: 1.25rem;
+      }
+
+      .stats strong {
+        font-size: 1.05rem;
+      }
+
+      .text-success {
+        color: #10b981;
+      }
+
+      .text-danger {
+        color: #ef4444;
+      }
+
+      .clear-btn {
+        padding: 0.5rem 0.9rem;
+        font: inherit;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #b91c1c;
+        cursor: pointer;
+        background-color: #fee2e2;
+        border: 1px solid #fecaca;
+        border-radius: 6px;
+      }
+
+      .clear-btn:hover:not(:disabled) {
+        background-color: #fecaca;
+      }
+
+      .clear-btn:disabled {
+        color: #94a3b8;
+        cursor: not-allowed;
+        background-color: #f1f5f9;
+        border-color: #e2e8f0;
+      }
+
+      .task-form {
+        display: flex;
+      }
+
+      .task-form input {
+        flex: 1;
+        padding: 0.7rem 1rem;
+        font: inherit;
+        font-size: 0.95rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px 0 0 6px;
+      }
+
+      .task-form input:focus {
+        outline: none;
+        border-color: #3498db;
+      }
+
+      .task-form button {
+        padding: 0.7rem 1.4rem;
+        font: inherit;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #fff;
+        cursor: pointer;
+        background-color: #10b981;
+        border: none;
+        border-radius: 0 6px 6px 0;
+      }
+
+      .task-form button:hover {
+        background-color: #059669;
+      }
+
+      .task-list {
+        list-style: none;
+      }
+
+      .task-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .task-item:last-child {
+        border-bottom: none;
+      }
+
+      .task-content {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+      }
+
+      .task-item.completed .task-title {
+        color: #94a3b8;
+        text-decoration: line-through;
+      }
+
+      .delete-btn {
+        padding: 0.3rem 0.7rem;
+        font: inherit;
+        font-size: 0.8rem;
+        color: #fff;
+        cursor: pointer;
+        background-color: #ef4444;
+        border: none;
+        border-radius: 4px;
+      }
+
+      .empty-message {
+        padding: 1.5rem 0;
+        font-size: 0.9rem;
+        color: #64748b;
+        text-align: center;
+      }
+
+      .note {
+        padding: 0.85rem 1rem;
+        margin-top: 1rem;
+        font-size: 0.88rem;
+        color: #1e40af;
+        background-color: #eff6ff;
+        border-left: 3px solid #3498db;
+        border-radius: 0 6px 6px 0;
+      }
+
+      code {
+        padding: 0.1rem 0.35rem;
+        font-size: 0.85em;
+        color: #0f172a;
+        background-color: #f1f5f9;
+        border-radius: 4px;
+      }
+    </style>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useEffect, useState } = React;
+
+      const STORAGE_KEY = 'latihan3_tasks';
+
+      function Header() {
+        return (
+          <header className="app-header">
+            <h1>React Task Manager</h1>
+            <p>Latihan Mandiri - Tombol Bersihkan Semua</p>
+          </header>
+        );
+      }
+
+      function TaskForm({ onAddTask }) {
+        const [title, setTitle] = useState('');
+
+        const handleSubmit = (event) => {
+          event.preventDefault();
+          if (!title.trim()) return;
+
+          onAddTask({
+            id: Date.now(),
+            title: title.trim(),
+            completed: false,
+          });
+          setTitle('');
+        };
+
+        return (
+          <form className="task-form" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Ketik tugas baru lalu tekan Enter..."
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+            />
+            <button type="submit">Tambah</button>
+          </form>
+        );
+      }
+
+      function TaskItem({ task, onDelete, onToggleComplete }) {
+        return (
+          <li className={`task-item ${task.completed ? 'completed' : ''}`}>
+            <div className="task-content">
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => onToggleComplete(task.id)}
+              />
+              <span className="task-title">{task.title}</span>
+            </div>
+            <button
+              type="button"
+              className="delete-btn"
+              onClick={() => onDelete(task.id)}
+            >
+              Hapus
+            </button>
+          </li>
+        );
+      }
+
+      function App() {
+        // Data dibaca dari localStorage saat komponen pertama kali dipasang
+        const [tasks, setTasks] = useState(() => {
+          try {
+            const saved = window.localStorage.getItem(STORAGE_KEY);
+            return saved ? JSON.parse(saved) : [];
+          } catch (error) {
+            console.error('Gagal membaca localStorage:', error);
+            return [];
+          }
+        });
+
+        // Setiap perubahan tasks otomatis disimpan kembali
+        useEffect(() => {
+          try {
+            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+          } catch (error) {
+            console.error('Gagal menyimpan ke localStorage:', error);
+          }
+        }, [tasks]);
+
+        const handleAddTask = (newTask) => setTasks((prev) => [...prev, newTask]);
+        const handleDeleteTask = (id) =>
+          setTasks((prev) => prev.filter((task) => task.id !== id));
+        const handleToggleComplete = (id) =>
+          setTasks((prev) =>
+            prev.map((task) =>
+              task.id === id ? { ...task, completed: !task.completed } : task
+            )
+          );
+
+        // Inti latihan: konfirmasi dulu, baru kosongkan seluruh daftar
+        const handleClearAll = () => {
+          const confirmed = window.confirm(
+            'Hapus semua tugas? Tindakan ini tidak dapat dibatalkan.'
+          );
+          if (confirmed) setTasks([]);
+        };
+
+        const completedCount = tasks.filter((task) => task.completed).length;
+        const remainingCount = tasks.length - completedCount;
+
+        return (
+          <div>
+            <Header />
+
+            <main className="container">
+              <div className="stats">
+                <div className="stats-values">
+                  <span>
+                    Total: <strong>{tasks.length}</strong>
+                  </span>
+                  <span className="text-success">
+                    Selesai: <strong>{completedCount}</strong>
+                  </span>
+                  <span className="text-danger">
+                    Belum: <strong>{remainingCount}</strong>
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className="clear-btn"
+                  onClick={handleClearAll}
+                  disabled={tasks.length === 0}
+                >
+                  Hapus Semua Tugas
+                </button>
+              </div>
+
+              <section className="card">
+                <TaskForm onAddTask={handleAddTask} />
+              </section>
+
+              <section className="card">
+                {tasks.length === 0 ? (
+                  <p className="empty-message">
+                    Belum ada tugas. Tambahkan tugas baru di atas!
+                  </p>
+                ) : (
+                  <ul className="task-list">
+                    {tasks.map((task) => (
+                      <TaskItem
+                        key={task.id}
+                        task={task}
+                        onDelete={handleDeleteTask}
+                        onToggleComplete={handleToggleComplete}
+                      />
+                    ))}
+                  </ul>
+                )}
+              </section>
+
+              <section className="card">
+                <p className="note">
+                  Tombol <strong>Hapus Semua Tugas</strong> memanggil{' '}
+                  <code>window.confirm()</code> lebih dulu. Jika pengguna menekan
+                  OK, barulah <code>setTasks([])</code> dijalankan sehingga seluruh
+                  daftar kosong dan localStorage ikut diperbarui.
+                </p>
+              </section>
+            </main>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+  </body>
+</html>

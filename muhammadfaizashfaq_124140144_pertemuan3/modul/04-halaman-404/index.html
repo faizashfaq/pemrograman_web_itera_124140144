@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan 4 - Halaman 404</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.65;
+        color: #333;
+        background-color: #f4f7f9;
+      }
+
+      .navbar {
+        padding: 1rem;
+        background-color: #1e293b;
+      }
+
+      .nav-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+
+      .logo a {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1.25rem;
+        list-style: none;
+      }
+
+      .nav-links a {
+        font-size: 0.92rem;
+        font-weight: 500;
+        color: #cbd5e1;
+        text-decoration: none;
+      }
+
+      .nav-links a:hover {
+        color: #38bdf8;
+      }
+
+      .nav-links a.active {
+        color: #38bdf8;
+      }
+
+      .container {
+        max-width: 720px;
+        margin: 2rem auto;
+        padding: 0 1rem 3rem;
+      }
+
+      .card {
+        padding: 1.35rem;
+        margin-bottom: 1rem;
+        background-color: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+      }
+
+      .card-title {
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+      }
+
+      .card p,
+      .card li {
+        font-size: 0.93rem;
+        color: #475569;
+      }
+
+      .card ul {
+        padding-left: 1.2rem;
+      }
+
+      .task-list {
+        list-style: none;
+        padding-left: 0 !important;
+      }
+
+      .task-list li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .task-list li:last-child {
+        border-bottom: none;
+      }
+
+      .not-found {
+        padding: 3rem 1.5rem;
+        text-align: center;
+        background-color: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+      }
+
+      .not-found-code {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1;
+        color: #0284c7;
+      }
+
+      .not-found h1 {
+        margin-top: 0.75rem;
+        font-size: 1.25rem;
+      }
+
+      .not-found p {
+        margin-top: 0.5rem;
+        font-size: 0.93rem;
+        color: #64748b;
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-top: 1.5rem;
+        padding: 0.55rem 1.1rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #fff;
+        text-decoration: none;
+        background-color: #0284c7;
+        border-radius: 6px;
+      }
+
+      .back-link:hover {
+        background-color: #0369a1;
+      }
+
+      .note {
+        padding: 0.85rem 1rem;
+        margin-top: 1rem;
+        font-size: 0.88rem;
+        color: #1e40af;
+        background-color: #eff6ff;
+        border-left: 3px solid #3498db;
+        border-radius: 0 6px 6px 0;
+      }
+
+      code {
+        padding: 0.1rem 0.35rem;
+        font-size: 0.85em;
+        color: #0f172a;
+        background-color: #f1f5f9;
+        border-radius: 4px;
+      }
+    </style>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@remix-run/router@1.23.0/dist/router.umd.js"></script>
+    <script src="https://unpkg.com/react-router@6.30.1/dist/umd/react-router.development.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.30.1/dist/umd/react-router-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // Komponen routing diambil dari global ReactRouterDOM (versi UMD)
+      const { HashRouter, Routes, Route, Link, NavLink } = ReactRouterDOM;
+
+      const navClass = ({ isActive }) => (isActive ? 'active' : undefined);
+
+      function Navbar() {
+        return (
+          <nav className="navbar">
+            <div className="nav-container">
+              <div className="logo">
+                <Link to="/">Task Manager</Link>
+              </div>
+              <ul className="nav-links">
+                <li>
+                  <NavLink to="/" end className={navClass}>
+                    Beranda
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/about" className={navClass}>
+                    Tentang
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        );
+      }
+
+      function Home() {
+        return (
+          <section className="card">
+            <h2 className="card-title">Beranda</h2>
+            <p>
+              Halaman ini memakai React Router. Perpindahan halaman terjadi tanpa
+              memuat ulang dokumen.
+            </p>
+            <ul className="task-list" style={{ marginTop: '0.75rem' }}>
+              <li>Membuat halaman About</li>
+              <li>Membuat komponen Navbar dengan Link</li>
+              <li>Menambahkan rute penangkap 404</li>
+            </ul>
+          </section>
+        );
+      }
+
+      function About() {
+        return (
+          <section className="card">
+            <h2 className="card-title">Tentang</h2>
+            <p>
+              Aplikasi contoh untuk latihan routing. Halaman ini dirender ketika
+              URL berubah menjadi <code>#/about</code>.
+            </p>
+          </section>
+        );
+      }
+
+      /**
+       * Halaman fallback: tampil ketika tidak ada rute yang cocok.
+       * Di project Vite, komponen ini disimpan di
+       * src/pages/NotFound/NotFound.jsx.
+       */
+      function NotFound() {
+        return (
+          <section className="not-found">
+            <p className="not-found-code">404</p>
+            <h1>Halaman tidak ditemukan</h1>
+            <p>
+              Alamat yang Anda buka tidak tersedia. Periksa kembali URL atau
+              kembali ke beranda.
+            </p>
+            <Link to="/" className="back-link">
+              Kembali ke Beranda
+            </Link>
+          </section>
+        );
+      }
+
+      function App() {
+        return (
+          /*
+           * HashRouter dipakai agar latihan tetap berjalan saat file dibuka
+           * langsung dari filesystem. Pada project React (Vite/CRA) gunakan
+           * BrowserRouter dengan path yang sama.
+           */
+          <HashRouter>
+            <div>
+              <Navbar />
+              <main className="container">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  {/* Rute penangkap: semua URL yang tidak cocok ke sini */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+
+                <section className="card">
+                  <h2 className="card-title">Coba sendiri</h2>
+                  <p>
+                    Ketik URL acak pada address bar, misalnya{' '}
+                    <code>index.html#/halaman-salah</code>, lalu tekan Enter.
+                    Halaman 404 akan muncul karena rute <code>path="*"</code>.
+                  </p>
+                  <p className="note">
+                    Di project Vite, <code>App.jsx</code> memakai{' '}
+                    <code>BrowserRouter</code> sehingga URL-nya{' '}
+                    <code>/halaman-salah</code> tanpa tanda <code>#</code>.
+                  </p>
+                </section>
+              </main>
+            </div>
+          </HashRouter>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+  </body>
+</html>

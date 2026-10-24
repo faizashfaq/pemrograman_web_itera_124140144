@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan 5 - Custom Hook useWindowSize</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.65;
+        color: #333;
+        background-color: #f4f7f9;
+      }
+
+      .app-header {
+        padding: 2rem 1rem;
+        color: #fff;
+        text-align: center;
+        background-color: #3498db;
+      }
+
+      .app-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .app-header p {
+        margin-top: 0.25rem;
+        font-size: 0.95rem;
+        opacity: 0.9;
+      }
+
+      .container {
+        max-width: 720px;
+        margin: 2rem auto;
+        padding: 0 1rem 3rem;
+      }
+
+      .card {
+        padding: 1.35rem;
+        margin-bottom: 1rem;
+        background-color: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+      }
+
+      .card-title {
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+      }
+
+      .card p {
+        font-size: 0.93rem;
+        color: #475569;
+      }
+
+      .status-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 0.35rem 0.85rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        border-radius: 999px;
+      }
+
+      .badge-desktop {
+        color: #0369a1;
+        background-color: #e0f2fe;
+      }
+
+      .badge-mobile {
+        color: #b45309;
+        background-color: #fef3c7;
+      }
+
+      .width-value {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .width-label {
+        font-size: 0.8rem;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .breakpoint-list {
+        padding-left: 1.2rem;
+        margin-top: 0.75rem;
+      }
+
+      .breakpoint-list li {
+        font-size: 0.9rem;
+        color: #475569;
+      }
+
+      .note {
+        padding: 0.85rem 1rem;
+        margin-top: 1rem;
+        font-size: 0.88rem;
+        color: #1e40af;
+        background-color: #eff6ff;
+        border-left: 3px solid #3498db;
+        border-radius: 0 6px 6px 0;
+      }
+
+      code {
+        padding: 0.1rem 0.35rem;
+        font-size: 0.85em;
+        color: #0f172a;
+        background-color: #f1f5f9;
+        border-radius: 4px;
+      }
+    </style>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useEffect, useState } = React;
+
+      const BREAKPOINT = 768;
+
+      /**
+       * Custom hook untuk memantau lebar jendela browser.
+       * Listener dipasang saat komponen dipasang dan dicabut saat unmount
+       * agar tidak terjadi kebocoran memori.
+       */
+      function useWindowSize() {
+        const [windowSize, setWindowSize] = useState({
+          width: typeof window !== 'undefined' ? window.innerWidth : 1200,
+        });
+
+        useEffect(() => {
+          function handleResize() {
+            setWindowSize({ width: window.innerWidth });
+          }
+
+          window.addEventListener('resize', handleResize);
+
+          // Cleanup: hapus listener ketika komponen dilepas
+          return () => window.removeEventListener('resize', handleResize);
+        }, []);
+
+        return windowSize;
+      }
+
+      function Header() {
+        return (
+          <header className="app-header">
+            <h1>React Task Manager</h1>
+            <p>Latihan Mandiri - Custom Hook useWindowSize</p>
+          </header>
+        );
+      }
+
+      function Home() {
+        const { width } = useWindowSize();
+        const isMobile = width < BREAKPOINT;
+
+        return (
+          <main className="container">
+            <section className="card">
+              <div className="status-row">
+                <div>
+                  <p className="width-label">Lebar jendela</p>
+                  <p className="width-value">{width}px</p>
+                </div>
+                <span className={`badge ${isMobile ? 'badge-mobile' : 'badge-desktop'}`}>
+                  {isMobile ? 'Mode Layar Mobile' : 'Mode Layar Desktop'}
+                </span>
+              </div>
+            </section>
+
+            <section className="card">
+              <h2 className="card-title">Cara mencoba</h2>
+              <p>
+                Perkecil atau perbesar jendela browser. Label status akan berubah
+                seketika tanpa perlu me-reload halaman.
+              </p>
+              <ul className="breakpoint-list">
+                <li>
+                  Lebar kurang dari <code>{BREAKPOINT}px</code> &rarr; badge
+                  kuning bertuliskan &quot;Mode Layar Mobile&quot;.
+                </li>
+                <li>
+                  Lebar <code>{BREAKPOINT}px</code> atau lebih &rarr; badge biru
+                  bertuliskan &quot;Mode Layar Desktop&quot;.
+                </li>
+              </ul>
+            </section>
+
+            <section className="card">
+              <h2 className="card-title">Cara kerja hook</h2>
+              <p>
+                <code>useWindowSize()</code> menyimpan lebar layar di state dan
+                mendaftarkan event listener <code>resize</code> pada{' '}
+                <code>window</code>. Fungsi cleanup pada <code>useEffect</code>{' '}
+                mencabut listener tersebut saat komponen tidak lagi dipakai.
+              </p>
+              <p className="note">
+                Karena berbentuk hook, logika ini bisa dipakai di komponen mana pun
+                hanya dengan satu baris:{' '}
+                <code>const {'{ width }'} = useWindowSize();</code>
+              </p>
+            </section>
+          </main>
+        );
+      }
+
+      function App() {
+        return (
+          <div>
+            <Header />
+            <Home />
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+  </body>
+</html>

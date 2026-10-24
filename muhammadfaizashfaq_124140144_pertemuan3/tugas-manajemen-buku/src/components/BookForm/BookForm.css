@@ -1,0 +1,22 @@
+.book-form-title {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.book-form-grid {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr;
+  gap: 1rem;
+}
+
+.book-form-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+}
+
+@media (max-width: 720px) {
+  .book-form-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan 6 - Statistik di Halaman About</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.65;
+        color: #333;
+        background-color: #f4f7f9;
+      }
+
+      .navbar {
+        padding: 1rem;
+        background-color: #1e293b;
+      }
+
+      .nav-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+
+      .logo a {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1.25rem;
+        list-style: none;
+      }
+
+      .nav-links a {
+        font-size: 0.92rem;
+        font-weight: 500;
+        color: #cbd5e1;
+        text-decoration: none;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: #38bdf8;
+      }
+
+      .container {
+        max-width: 720px;
+        margin: 2rem auto;
+        padding: 0 1rem 3rem;
+      }
+
+      .card {
+        padding: 1.35rem;
+        margin-bottom: 1rem;
+        background-color: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+      }
+
+      .card-title {
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+      }
+
+      .card p {
+        font-size: 0.93rem;
+        color: #475569;
+      }
+
+      .stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: space-around;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        background-color: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+      }
+
+      .stats strong {
+        font-size: 1.05rem;
+      }
+
+      .text-success {
+        color: #10b981;
+      }
+
+      .text-danger {
+        color: #ef4444;
+      }
+
+      .task-form {
+        display: flex;
+      }
+
+      .task-form input {
+        flex: 1;
+        padding: 0.7rem 1rem;
+        font: inherit;
+        font-size: 0.95rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px 0 0 6px;
+      }
+
+      .task-form input:focus {
+        outline: none;
+        border-color: #3498db;
+      }
+
+      .task-form button {
+        padding: 0.7rem 1.4rem;
+        font: inherit;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #fff;
+        cursor: pointer;
+        background-color: #10b981;
+        border: none;
+        border-radius: 0 6px 6px 0;
+      }
+
+      .task-list {
+        list-style: none;
+      }
+
+      .task-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .task-item:last-child {
+        border-bottom: none;
+      }
+
+      .task-content {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+      }
+
+      .task-item.completed .task-title {
+        color: #94a3b8;
+        text-decoration: line-through;
+      }
+
+      .delete-btn {
+        padding: 0.3rem 0.7rem;
+        font: inherit;
+        font-size: 0.8rem;
+        color: #fff;
+        cursor: pointer;
+        background-color: #ef4444;
+        border: none;
+        border-radius: 4px;
+      }
+
+      .empty-message {
+        padding: 1.5rem 0;
+        font-size: 0.9rem;
+        color: #64748b;
+        text-align: center;
+      }
+
+      .about-highlight {
+        padding: 1rem 1.15rem;
+        margin-top: 1rem;
+        font-size: 1rem;
+        color: #0369a1;
+        background-color: #eff6ff;
+        border-radius: 6px;
+      }
+
+      .about-highlight strong {
+        font-size: 1.15rem;
+      }
+
+      .note {
+        padding: 0.85rem 1rem;
+        margin-top: 1rem;
+        font-size: 0.88rem;
+        color: #1e40af;
+        background-color: #eff6ff;
+        border-left: 3px solid #3498db;
+        border-radius: 0 6px 6px 0;
+      }
+
+      code {
+        padding: 0.1rem 0.35rem;
+        font-size: 0.85em;
+        color: #0f172a;
+        background-color: #f1f5f9;
+        border-radius: 4px;
+      }
+    </style>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@remix-run/router@1.23.0/dist/router.umd.js"></script>
+    <script src="https://unpkg.com/react-router@6.30.1/dist/umd/react-router.development.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.30.1/dist/umd/react-router-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { createContext, useContext, useEffect, useState } = React;
+      const { HashRouter, Routes, Route, Link, NavLink } = ReactRouterDOM;
+
+      const STORAGE_KEY = 'latihan6_tasks';
+
+      const TaskContext = createContext(null);
+
+      // Consumer hook: dipakai Home dan About untuk membaca state global
+      function useTasks() {
+        const context = useContext(TaskContext);
+        if (!context) {
+          throw new Error('useTasks harus digunakan di dalam TaskProvider');
+        }
+        return context;
+      }
+
+      function TaskProvider({ children }) {
+        const [tasks, setTasks] = useState(() => {
+          try {
+            const saved = window.localStorage.getItem(STORAGE_KEY);
+            return saved ? JSON.parse(saved) : [];
+          } catch (error) {
+            console.error('Gagal membaca localStorage:', error);
+            return [];
+          }
+        });
+
+        useEffect(() => {
+          try {
+            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+          } catch (error) {
+            console.error('Gagal menyimpan ke localStorage:', error);
+          }
+        }, [tasks]);
+
+        const addTask = (newTask) => setTasks((prev) => [...prev, newTask]);
+        const deleteTask = (id) =>
+          setTasks((prev) => prev.filter((task) => task.id !== id));
+        const toggleComplete = (id) =>
+          setTasks((prev) =>
+            prev.map((task) =>
+              task.id === id ? { ...task, completed: !task.completed } : task
+            )
+          );
+
+        const completedCount = tasks.filter((task) => task.completed).length;
+
+        const value = {
+          tasks,
+          addTask,
+          deleteTask,
+          toggleComplete,
+          stats: {
+            total: tasks.length,
+            completed: completedCount,
+            remaining: tasks.length - completedCount,
+          },
+        };
+
+        return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;
+      }
+
+      const navClass = ({ isActive }) => (isActive ? 'active' : undefined);
+
+      function Navbar() {
+        return (
+          <nav className="navbar">
+            <div className="nav-container">
+              <div className="logo">
+                <Link to="/">Task Manager</Link>
+              </div>
+              <ul className="nav-links">
+                <li>
+                  <NavLink to="/" end className={navClass}>
+                    Beranda
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/about" className={navClass}>
+                    Tentang
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        );
+      }
+
+      function TaskForm() {
+        const { addTask } = useTasks();
+        const [title, setTitle] = useState('');
+
+        const handleSubmit = (event) => {
+          event.preventDefault();
+          if (!title.trim()) return;
+
+          addTask({
+            id: Date.now(),
+            title: title.trim(),
+            completed: false,
+          });
+          setTitle('');
+        };
+
+        return (
+          <form className="task-form" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Ketik tugas baru lalu tekan Enter..."
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+            />
+            <button type="submit">Tambah</button>
+          </form>
+        );
+      }
+
+      function Home() {
+        // Tidak ada props yang dioper dari App; semua datang dari context
+        const { tasks, deleteTask, toggleComplete, stats } = useTasks();
+
+        return (
+          <main className="container">
+            <div className="stats">
+              <span>
+                Total: <strong>{stats.total}</strong>
+              </span>
+              <span className="text-success">
+                Selesai: <strong>{stats.completed}</strong>
+              </span>
+              <span className="text-danger">
+                Belum: <strong>{stats.remaining}</strong>
+              </span>
+            </div>
+
+            <section className="card">
+              <TaskForm />
+            </section>
+
+            <section className="card">
+              {tasks.length === 0 ? (
+                <p className="empty-message">
+                  Belum ada tugas. Tambahkan tugas baru di atas!
+                </p>
+              ) : (
+                <ul className="task-list">
+                  {tasks.map((task) => (
+                    <li
+                      key={task.id}
+                      className={`task-item ${task.completed ? 'completed' : ''}`}
+                    >
+                      <div className="task-content">
+                        <input
+                          type="checkbox"
+                          checked={task.completed}
+                          onChange={() => toggleComplete(task.id)}
+                        />
+                        <span className="task-title">{task.title}</span>
+                      </div>
+                      <button
+                        type="button"
+                        className="delete-btn"
+                        onClick={() => deleteTask(task.id)}
+                      >
+                        Hapus
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          </main>
+        );
+      }
+
+      function About() {
+        // Statistik dibaca langsung dari context, bukan dari props
+        const { stats } = useTasks();
+
+        return (
+          <main className="container">
+            <section className="card">
+              <h2 className="card-title">Tentang Aplikasi</h2>
+              <p>
+                Aplikasi Task Manager ini dibangun dengan functional components,
+                React Hooks, React Router, dan Context API.
+              </p>
+
+              <p className="about-highlight">
+                Saat ini Anda memiliki total <strong>{stats.total}</strong> tugas
+                yang tersimpan di sistem.
+              </p>
+
+              <p className="note">
+                Angka di atas berasal dari <code>useTasks()</code>. Halaman About
+                tidak menerima props apa pun dari <code>App</code>, tetapi tetap
+                bisa membaca jumlah tugas karena berada di dalam{' '}
+                <code>TaskProvider</code>.
+              </p>
+            </section>
+          </main>
+        );
+      }
+
+      function App() {
+        return (
+          <HashRouter>
+            <TaskProvider>
+              <div>
+                <Navbar />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                </Routes>
+              </div>
+            </TaskProvider>
+          </HashRouter>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+  </body>
+</html>

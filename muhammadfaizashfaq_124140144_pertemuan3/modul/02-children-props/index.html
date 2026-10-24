@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan 2 - Children Props</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.65;
+        color: #333;
+        background-color: #f4f7f9;
+      }
+
+      .app-header {
+        padding: 2rem 1rem;
+        color: #fff;
+        text-align: center;
+        background-color: #3498db;
+      }
+
+      .app-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .app-header p {
+        margin-top: 0.25rem;
+        font-size: 0.95rem;
+        opacity: 0.9;
+      }
+
+      .container {
+        max-width: 720px;
+        margin: 2rem auto;
+        padding: 0 1rem 3rem;
+      }
+
+      /* Komponen Card: wadah berbingkai yang merender props.children */
+      .card {
+        padding: 1.35rem;
+        margin-bottom: 1rem;
+        background-color: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+      }
+
+      .card-title {
+        margin-bottom: 0.9rem;
+        font-size: 1rem;
+      }
+
+      .task-form {
+        display: flex;
+      }
+
+      .task-form input {
+        flex: 1;
+        padding: 0.7rem 1rem;
+        font: inherit;
+        font-size: 0.95rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px 0 0 6px;
+      }
+
+      .task-form input:focus {
+        outline: none;
+        border-color: #3498db;
+      }
+
+      .task-form button {
+        padding: 0.7rem 1.4rem;
+        font: inherit;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #fff;
+        cursor: pointer;
+        background-color: #10b981;
+        border: none;
+        border-radius: 0 6px 6px 0;
+      }
+
+      .task-form button:hover {
+        background-color: #059669;
+      }
+
+      .task-list {
+        list-style: none;
+      }
+
+      .task-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .task-item:last-child {
+        border-bottom: none;
+      }
+
+      .task-content {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+      }
+
+      .task-title {
+        font-size: 0.95rem;
+      }
+
+      .task-item.completed .task-title {
+        color: #94a3b8;
+        text-decoration: line-through;
+      }
+
+      .delete-btn {
+        padding: 0.3rem 0.7rem;
+        font: inherit;
+        font-size: 0.8rem;
+        color: #fff;
+        cursor: pointer;
+        background-color: #ef4444;
+        border: none;
+        border-radius: 4px;
+      }
+
+      .delete-btn:hover {
+        background-color: #dc2626;
+      }
+
+      .empty-message {
+        font-size: 0.9rem;
+        color: #64748b;
+      }
+
+      .note {
+        padding: 0.85rem 1rem;
+        margin-top: 1rem;
+        font-size: 0.88rem;
+        color: #1e40af;
+        background-color: #eff6ff;
+        border-left: 3px solid #3498db;
+        border-radius: 0 6px 6px 0;
+      }
+
+      code {
+        padding: 0.1rem 0.35rem;
+        font-size: 0.85em;
+        color: #0f172a;
+        background-color: #f1f5f9;
+        border-radius: 4px;
+      }
+    </style>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState } = React;
+
+      function Header({ title, description }) {
+        return (
+          <header className="app-header">
+            <h1>{title}</h1>
+            {description && <p>{description}</p>}
+          </header>
+        );
+      }
+
+      /**
+       * Card adalah komponen pembungkus serbaguna.
+       * Isi yang ditulis di antara <Card> dan </Card> diterima sebagai
+       * props.children, sehingga Card bisa dipakai untuk konten apa pun.
+       */
+      function Card({ title, children }) {
+        return (
+          <section className="card">
+            {title && <h2 className="card-title">{title}</h2>}
+            {children}
+          </section>
+        );
+      }
+
+      function TaskForm({ onAddTask }) {
+        const [title, setTitle] = useState('');
+
+        const handleSubmit = (event) => {
+          event.preventDefault();
+          if (!title.trim()) return;
+
+          onAddTask({
+            id: Date.now(),
+            title: title.trim(),
+            completed: false,
+          });
+          setTitle('');
+        };
+
+        return (
+          <form className="task-form" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Ketik tugas baru lalu tekan Enter..."
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+            />
+            <button type="submit">Tambah</button>
+          </form>
+        );
+      }
+
+      function TaskItem({ task, onDelete, onToggleComplete }) {
+        return (
+          <li className={`task-item ${task.completed ? 'completed' : ''}`}>
+            <div className="task-content">
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => onToggleComplete(task.id)}
+              />
+              <span className="task-title">{task.title}</span>
+            </div>
+            <button
+              type="button"
+              className="delete-btn"
+              onClick={() => onDelete(task.id)}
+            >
+              Hapus
+            </button>
+          </li>
+        );
+      }
+
+      function App() {
+        const [tasks, setTasks] = useState([
+          { id: 1, title: 'Mempelajari komponen Card', completed: true },
+          { id: 2, title: 'Membungkus TaskForm dengan Card', completed: false },
+        ]);
+
+        const handleAddTask = (newTask) => setTasks((prev) => [...prev, newTask]);
+        const handleDeleteTask = (id) =>
+          setTasks((prev) => prev.filter((task) => task.id !== id));
+        const handleToggleComplete = (id) =>
+          setTasks((prev) =>
+            prev.map((task) =>
+              task.id === id ? { ...task, completed: !task.completed } : task
+            )
+          );
+
+        return (
+          <div>
+            <Header
+              title="React Task Manager"
+              description="Latihan Mandiri - Children Props"
+            />
+
+            <main className="container">
+              {/* Card dipakai untuk membungkus TaskForm sesuai instruksi latihan */}
+              <Card title="Tambah Tugas">
+                <TaskForm onAddTask={handleAddTask} />
+              </Card>
+
+              {/* Card yang sama dipakai ulang untuk konten yang berbeda */}
+              <Card title="Daftar Tugas">
+                {tasks.length === 0 ? (
+                  <p className="empty-message">Belum ada tugas.</p>
+                ) : (
+                  <ul className="task-list">
+                    {tasks.map((task) => (
+                      <TaskItem
+                        key={task.id}
+                        task={task}
+                        onDelete={handleDeleteTask}
+                        onToggleComplete={handleToggleComplete}
+                      />
+                    ))}
+                  </ul>
+                )}
+              </Card>
+
+              <Card title="Tentang latihan ini">
+                <p>
+                  <code>Card</code> tidak tahu isi yang dibungkusnya. Ia hanya
+                  merender <code>{'{children}'}</code> di dalam wadah berbingkai.
+                  Karena itu, komponen yang sama bisa membungkus form, daftar,
+                  maupun teks penjelasan tanpa diubah.
+                </p>
+                <p className="note">
+                  Pola ini disebut komposisi (composition). Bandingkan dengan
+                  mengoper props biasa: <code>children</code> membuat komponen
+                  lebih fleksibel karena isinya ditentukan oleh pemanggil.
+                </p>
+              </Card>
+            </main>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
