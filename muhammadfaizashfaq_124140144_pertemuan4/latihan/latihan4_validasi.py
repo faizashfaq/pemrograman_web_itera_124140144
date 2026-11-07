@@ -1,20 +1,4 @@
-# ===================================================
-# Berkas    : latihan4_validasi.py
-# Materi    : Pertemuan 4 - 4. Modularitas Fungsi
-# Deskripsi : Latihan mandiri fungsi validator password.
-# ===================================================
-
-# Konsep yang dipakai hanya dari materi 1 sampai 4:
-# fungsi (def, parameter, return, docstring, type hint),
-# if, for, operator in, len(), dan f-string dari materi 2.
-
-
 def validasi_password(password: str) -> bool:
-    """Mengembalikan True jika password valid, False jika tidak.
-
-    Password valid apabila panjangnya minimal 8 karakter dan
-    mengandung setidaknya satu karakter angka (0-9).
-    """
     if len(password) < 8:
         return False
 

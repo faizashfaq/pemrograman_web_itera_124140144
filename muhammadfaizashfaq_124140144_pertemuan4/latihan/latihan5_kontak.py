@@ -1,15 +1,3 @@
-# ===================================================
-# Berkas    : latihan5_kontak.py
-# Materi    : Pertemuan 4 - 5. Struktur Data
-# Deskripsi : Latihan mandiri katalog kontak sederhana
-#             berbasis dictionary.
-# ===================================================
-
-# Konsep yang dipakai hanya dari materi 1 sampai 5:
-# dictionary, method .get(), .items(), .append() tidak dipakai
-# karena di sini cukup penugasan key baru, fungsi dari materi 4,
-# while dan if-elif-else dari materi 3, serta f-string dari materi 2.
-
 kontak = {
     "Budi Santoso": "0812-3456-7890",
     "Siti Aminah": "0813-9876-5432",
@@ -18,7 +6,6 @@ kontak = {
 
 
 def tambah_kontak(daftar: dict, nama: str, nomor: str) -> None:
-    """Menambahkan kontak baru ke dalam dictionary."""
     if not nama or not nomor:
         print("Nama dan nomor telepon tidak boleh kosong.")
         return
@@ -28,7 +15,6 @@ def tambah_kontak(daftar: dict, nama: str, nomor: str) -> None:
 
 
 def cari_kontak(daftar: dict, nama: str) -> None:
-    """Mencari nomor telepon berdasarkan nama memakai .get()."""
     nomor = daftar.get(nama)
 
     if nomor is None:
@@ -38,7 +24,6 @@ def cari_kontak(daftar: dict, nama: str) -> None:
 
 
 def tampilkan_kontak(daftar: dict) -> None:
-    """Menampilkan seluruh kontak yang tersimpan."""
     print("\n--- DAFTAR KONTAK ---")
 
     nomor_urut = 1
@@ -50,7 +35,6 @@ def tampilkan_kontak(daftar: dict) -> None:
 
 
 def tampilkan_menu() -> None:
-    """Menampilkan pilihan menu utama."""
     print("\n=== KATALOG KONTAK ===")
     print("1. Tambah kontak")
     print("2. Cari kontak")
