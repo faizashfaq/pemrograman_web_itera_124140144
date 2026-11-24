@@ -26,6 +26,7 @@ yang menjelaskan fitur, struktur kode, screenshot, dan ringkasan pengujiannya.
 | **3** | React Basics | **KutuBUKU** — aplikasi manajemen buku pribadi berbasis React | [README pertemuan 3](muhammadfaizashfaq_124140144_pertemuan3/README.md) |
 | **4** | Python Dasar | Tiga program tugas (BMI, nilai mahasiswa, modul matematika) + enam latihan | [README pertemuan 4](muhammadfaizashfaq_124140144_pertemuan4/README.md) |
 | **5** | Python OOP | **Sistem Manajemen Perpustakaan** + enam latihan mandiri OOP | [README pertemuan 5](muhammadfaizashfaq_124140144_pertemuan5/README.md) |
+| **6** | Pyramid Framework | **RESTful API Manajemen Akademik** — CRUD Mahasiswa & Matakuliah dengan Pyramid + PostgreSQL | [README pertemuan 6](muhammadfaizashfaq_124140144_pertemuan6/README.md) |
 
 ### Pertemuan 1 — Mini POS
 
@@ -100,13 +101,33 @@ dan `super()`, encapsulation dengan access modifier dan `@property`, polymorphis
 (method overriding, duck typing), serta abstract class dengan `abc.ABC` dan
 `@abstractmethod`.
 
+### Pertemuan 6 — RESTful API Manajemen Akademik
+
+Aplikasi RESTful API berbasis **Pyramid + PostgreSQL + SQLAlchemy** yang
+menyediakan operasi CRUD penuh untuk dua entitas: **Mahasiswa** (modul dasar) dan
+**Matakuliah** (tugas praktikum). Setiap entitas memiliki lima endpoint
+(`GET` daftar, `GET` detail, `POST`, `PUT`, `DELETE`) dengan validasi input dan
+status code HTTP yang tepat (`200`, `400`, `404`).
+
+Proyek berada di folder `muhammadfaizashfaq_124140144_pertemuan6/` dan dibuat
+dari template resmi `cookiecutter gh:Pylons/pyramid-cookiecutter-alchemy`.
+Perubahan skema tabel dikelola lewat **migrasi Alembic**, data awal diisi melalui
+skrip seeding, dan seluruh endpoint diuji dengan **cURL** serta **20 pengujian
+fungsional pytest** (memakai SQLite sementara, tanpa mengubah data PostgreSQL).
+
+**Materi yang dipraktikkan:** arsitektur Pyramid, URL dispatch dengan predikat
+`request_method`, SQLAlchemy ORM & `to_dict()`, migrasi Alembic, transaction
+management per request (`zope.sqlalchemy` + `pyramid_tm`), view `renderer='json'`,
+serta konfigurasi INI (development & production).
+
 ---
 
 ## 🚀 Cara Menjalankan
 
-Pertemuan 1–3 adalah aplikasi web, pertemuan 4–5 adalah program Python murni.
-Semua bisa dijalankan tanpa dependensi tambahan kecuali project React pada
-pertemuan 3.
+Pertemuan 1–3 adalah aplikasi web, pertemuan 4–5 adalah program Python murni,
+dan pertemuan 6 adalah aplikasi web Pyramid yang memerlukan PostgreSQL. Semua bisa
+dijalankan tanpa dependensi tambahan kecuali project React pada pertemuan 3 dan
+aplikasi Pyramid pada pertemuan 6.
 
 ### Clone repository
 
@@ -177,6 +198,32 @@ python3 main.py
 Latihan mandiri pertemuan 5 ada di folder `latihan/`, masing-masing dijalankan
 dengan `python3 <nama_file>.py`.
 
+### Cara 5 — Pyramid (Pertemuan 6)
+
+Pertemuan 6 adalah aplikasi web Pyramid yang memerlukan PostgreSQL dan
+dependensi Python:
+
+```bash
+cd muhammadfaizashfaq_124140144_pertemuan6
+python3 -m venv venv
+source venv/bin/activate
+pip install -e ".[testing]"
+
+# siapkan database PostgreSQL (lihat README pertemuan 6),
+# lalu jalankan migrasi + seeding:
+alembic -c development.ini upgrade head
+python -m pyramid_mahasiswa.scripts.initialize_db development.ini
+
+# jalankan server di http://localhost:6543
+pserve development.ini --reload
+```
+
+Untuk menjalankan pengujian otomatis tanpa perlu PostgreSQL:
+
+```bash
+pytest        # 20 passed, memakai SQLite sementara
+```
+
 ### Membuka halaman latihan (`modul/`)
 
 Halaman latihan di folder `modul/` berjalan tanpa server dan tanpa internet.
@@ -217,6 +264,10 @@ yaitu aplikasi tugas dan jawaban latihan.
 | **Vitest + React Testing Library** | Pengujian komponen React |
 | **Python 3** | Seluruh program pada pertemuan 4 dan 5 (tanpa dependensi eksternal) |
 | **abc (stdlib Python)** | Abstract class dan `@abstractmethod` pada pertemuan 5 |
+| **Pyramid** | Framework web pada pertemuan 6 (URL dispatch & view configuration) |
+| **SQLAlchemy** | ORM pada pertemuan 6 |
+| **PostgreSQL** | Database server pada pertemuan 6 |
+| **Alembic** | Migrasi skema database pada pertemuan 6 |
 | **localStorage** | Penyimpanan data di sisi klien |
 | **Blob & FileReader** | Ekspor dan impor data JSON |
 | **Open-Meteo** | Data cuaca real-time (gratis, tanpa API key) |
@@ -224,4 +275,5 @@ yaitu aplikasi tugas dan jawaban latihan.
 
 Pertemuan 1 dan 2 tidak memiliki dependensi dan bisa langsung dijalankan. Pertemuan 3
 memerlukan `npm install` sebelum `npm run dev`. Pertemuan 4 dan 5 murni Python
-dan langsung dijalankan lewat terminal.
+dan langsung dijalankan lewat terminal. Pertemuan 6 memerlukan `pip install -e ".[testing]"`
+dan server PostgreSQL sebelum `pserve` dijalankan.
